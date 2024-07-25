@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sample-sf
+spec:
+  serviceName: sample-sf
+  replicas: 3
+  selector:
+    matchLabels:
+      app: sample-sf
+  template:
+    metadata:
+      labels:
+        app: sample-sf
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx
+          volumeMounts:
+            - mountPath: /usr/share/nginx/html
+              name: www
+  volumeClaimTemplates:
+    - metadata:
+        name: www
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1G
